@@ -6,7 +6,13 @@
       <p>Wait while we terminate your request...</p>
     </v-col>
     <v-col
-      ><v-btn class="mt-2" text color="error" @click="dismiss">
+      ><v-btn
+        name="dismissError"
+        class="mt-2"
+        text
+        color="error"
+        @click="dismiss"
+      >
         close
       </v-btn></v-col
     >
@@ -52,9 +58,15 @@
         align="end"
         class="pa-4 ml-2"
       >
-        <v-btn color="error" @click="dismiss">Cancel</v-btn>
+        <v-btn name="dismiss" color="error" @click="dismiss">Cancel</v-btn>
         <v-spacer></v-spacer>
-        <v-btn color="primary" @click="submit">Submit</v-btn>
+        <v-btn
+          name="submit"
+          color="primary"
+          @click="submit"
+          id="submit-new-rota"
+          >Submit</v-btn
+        >
       </v-row>
     </v-col>
   </v-row>
@@ -95,7 +107,7 @@ export default {
 
       return date.getDay() != 6 && date.getDay() != 0;
     },
-    submit() {
+    async submit() {
       if (this.startDate === "DD-MM-YYYY" && this.endDate === "DD-MM-YYYY") {
         this.requiredData = false;
       } else {
@@ -106,21 +118,19 @@ export default {
 
         const payload = { startDate: this.startDate, endDate: this.endDate };
 
-        const addRotaResponse = this.$store.dispatch(
+        const generateRotaResponse = await this.$store.dispatch(
           "rotas/generateNewRota",
           payload
         );
 
-        addRotaResponse
-          .then(({ data }) => {
-            this.$store.dispatch("rotas/addRota", { ...data, payload });
-          })
+        await this.$store
+          .dispatch("rotas/addRota", { ...generateRotaResponse.data, payload })
           .then(() => {
             this.submitting = false;
             this.submitted = true;
             setTimeout(() => {
               this.dismiss();
-            }, 1500);
+            }, 500);
           })
           .catch((e) => {
             console.error(e);

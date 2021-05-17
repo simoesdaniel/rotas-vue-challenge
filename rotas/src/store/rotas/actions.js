@@ -1,7 +1,7 @@
 import axios from "axios";
 export default {
-  loadRotas({ commit, dispatch }) {
-    axios
+  async loadRotas({ commit, dispatch }) {
+    await axios
       .get("http://clava.io/api/rotas")
       .then(({ data }) => {
         const { rotas, users } = data;

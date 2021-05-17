@@ -5,16 +5,7 @@
         <the-actions-center />
       </v-col>
 
-      <v-col v-if="!isLoaded">
-        <v-progress-circular
-          :size="70"
-          :width="7"
-          color="primary"
-          indeterminate
-        ></v-progress-circular>
-      </v-col>
       <base-tab-sections
-        v-else
         class="mt-8"
         :tabs="availableShifts"
         @changeSelectedTab="changeSelectedShift"
@@ -49,7 +40,6 @@ export default {
       shift: "rotas/getShift",
       selectedShift: "rotas/getSelectedShift",
       availableShifts: "rotas/getAvailableShifts",
-      loaded: "rotas/isLoaded",
     }),
   },
   methods: {
