@@ -14,6 +14,9 @@
   <v-row v-else-if="submittionFailed">
     <new-rota-failed @dismiss="dismiss" @tryAgain="submit" />
   </v-row>
+  <v-row v-else-if="submitted">
+    <new-rota-success @dismiss="dismiss" />
+  </v-row>
   <v-row v-else no-gutters>
     <v-date-picker
       v-model="date"
@@ -59,8 +62,9 @@
 
 <script>
 import NewRotaFailed from "./NewRotaFailed.vue";
+import NewRotaSuccess from "./NewRotaSuccess.vue";
 export default {
-  components: { NewRotaFailed },
+  components: { NewRotaFailed, NewRotaSuccess },
   name: "NewRota",
   emits: ["dismiss"],
   data: () => ({
@@ -69,6 +73,7 @@ export default {
     endDate: "DD-MM-YYYY",
     submitting: false,
     submittionFailed: false,
+    submitted: false,
     requiredData: true,
   }),
   methods: {
@@ -98,18 +103,25 @@ export default {
         this.requiredData = true;
         this.submitting = true;
         this.actionText = "Wait while we terminate your request...";
+
         const payload = { startDate: this.startDate, endDate: this.endDate };
+
         const addRotaResponse = this.$store.dispatch(
           "rotas/generateNewRota",
           payload
         );
-        console.log(addRotaResponse);
+
         addRotaResponse
           .then(({ data }) => {
-            console.log(data);
             this.$store.dispatch("rotas/addRota", { ...data, payload });
           })
-          .then(this.dismiss())
+          .then(() => {
+            this.submitting = false;
+            this.submitted = true;
+            setTimeout(() => {
+              this.dismiss();
+            }, 1500);
+          })
           .catch((e) => {
             console.error(e);
             this.submittionFailed = true;
@@ -121,6 +133,7 @@ export default {
       this.endDate = "DD-MM-YYYY";
       this.submitting = false;
       this.submittionFailed = false;
+      this.submitted = false;
       this.$emit("dismiss");
     },
   },

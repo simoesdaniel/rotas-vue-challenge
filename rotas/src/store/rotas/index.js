@@ -8,6 +8,7 @@ export default {
     return {
       shifts: {},
       availableShifts: [],
+      availableRotas: [],
       selectedShift: "morning",
       selectedUsers: [],
       loaded: false,

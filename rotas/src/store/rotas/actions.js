@@ -6,8 +6,9 @@ export default {
       .then(({ data }) => {
         const { rotas, users } = data;
         const shifts = { morning: [], afternoon: [] };
-
+        const availableRotas = [];
         for (const key in rotas) {
+          availableRotas.push(rotas[key].rotaID);
           rotas[key].rota.forEach((entry) => {
             if (entry.type === "morning") {
               shifts.morning.push(
@@ -22,7 +23,7 @@ export default {
         }
         const availableShifts = Object.keys(shifts);
         availableShifts.push("all");
-        commit("load", { shifts, availableShifts });
+        commit("load", { shifts, availableShifts, availableRotas });
       })
       .then(dispatch("loaded"))
       .catch((e) => console.error(e));
@@ -30,21 +31,31 @@ export default {
   generateNewRota(payload) {
     return axios.post("http://clava.io/api/generate", payload);
   },
-  async addRota({ commit, rootGetters }, { rotaId }) {
+  async addRota({ commit, rootGetters, getters }, { rotaId }) {
     await axios
       .get("http://clava.io/api/rota/" + rotaId)
       .then(({ data }) => {
-        const { rota, rotaID, period } = data;
-        const users = rootGetters["users/getAllUsers"];
         const shifts = { morning: [], afternoon: [] };
-        for (const key in rota) {
-          if (rota[key].type == "morning") {
-            shifts.morning.push(mapShifts(rota[key], rotaID, period, users));
-          } else {
-            shifts.afternoon.push(mapShifts(rota[key], rotaID, period, users));
+        const { rota, rotaID, period } = data;
+
+        const users = rootGetters["users/getAllUsers"];
+        const availableRotas = getters.getAvailableRotas;
+
+        if (!availableRotas.includes(rotaID)) {
+          for (const key in rota) {
+            if (rota[key].type == "morning") {
+              shifts.morning.push(mapShifts(rota[key], rotaID, period, users));
+            } else {
+              shifts.afternoon.push(
+                mapShifts(rota[key], rotaID, period, users)
+              );
+            }
           }
+          commit("addRota", {
+            morning: shifts.morning,
+            afternoon: shifts.afternoon,
+          });
         }
-        commit("addRota", shifts);
       })
       .catch((e) => console.log(e));
   },

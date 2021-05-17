@@ -24,6 +24,9 @@ export default {
   getAvailableShifts(state) {
     return state.availableShifts;
   },
+  getAvailableRotas(state) {
+    return state.availableRotas;
+  },
   isLoaded(state) {
     return state.loaded;
   },

@@ -1,7 +1,8 @@
 export default {
-  load(state, { shifts, availableShifts }) {
+  load(state, { shifts, availableShifts, availableRotas }) {
     state.shifts = shifts;
     state.availableShifts = availableShifts;
+    state.availableRotas = availableRotas;
   },
   setLoaded(state) {
     state.loaded = true;
@@ -16,8 +17,8 @@ export default {
     const userIds = users.map((u) => u.userId);
     state.selectedUsers = userIds;
   },
-  addRota(state, payload) {
-    payload.morning.forEach((el) => state.shifts.morning.push(el));
-    payload.afternoon.forEach((el) => state.shifts.afternoon.push(el));
+  addRota(state, { morning, afternoon }) {
+    morning.forEach((el) => state.shifts.morning.push(el));
+    afternoon.forEach((el) => state.shifts.afternoon.push(el));
   },
 };
