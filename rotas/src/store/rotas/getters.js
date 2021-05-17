@@ -1,8 +1,11 @@
 export default {
   getShift(state) {
+    // standard shift array
     let shift = state.shifts[state.selectedShift]
       ? state.shifts[state.selectedShift]
       : [];
+
+    // if all shifts are selected  merge both shifts
     if (state.selectedShift === "all") {
       const allShifts = [];
       for (const key in state.shifts) {
@@ -12,6 +15,8 @@ export default {
       }
       shift = allShifts;
     }
+
+    // at the end check if it should filter by user and apply the filter
     if (state.selectedUsers && state.selectedUsers.length > 0) {
       shift = shift.filter((r) => state.selectedUsers.includes(r.userId));
     }
