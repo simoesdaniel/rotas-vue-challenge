@@ -20,6 +20,8 @@ export default new Vuetify({
       dark: {
         primary: colors.blue.lighten3,
         background: colors.indigo.base,
+        morning: colors.yellow.darken1,
+        afternoon: colors.orange.darken1,
       },
     },
   },

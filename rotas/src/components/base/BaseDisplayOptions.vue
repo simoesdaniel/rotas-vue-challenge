@@ -4,7 +4,12 @@
       <v-btn outlined color="primary" dark @click="setDisplayType('accordion')"
         ><v-icon>mdi-view-list</v-icon></v-btn
       >
-      <v-btn outlined color="success" dark @click="setDisplayType('calendar')"
+      <v-btn
+        outlined
+        color="success"
+        dark
+        @click="setDisplayType('calendar')"
+        class="ml-2"
         ><v-icon>mdi-calendar</v-icon></v-btn
       >
     </v-col>

@@ -1,5 +1,7 @@
 import Vue from "vue";
 import Vuex from "vuex";
+import RotasModule from "./rotas/index";
+import UsersModule from "./user/index";
 
 Vue.use(Vuex);
 
@@ -32,5 +34,8 @@ export default new Vuex.Store({
       return state.displayView;
     },
   },
-  modules: {},
+  modules: {
+    rotas: RotasModule,
+    users: UsersModule,
+  },
 });

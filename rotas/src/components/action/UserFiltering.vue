@@ -1,10 +1,12 @@
 <template>
   <v-combobox
     v-model="select"
-    :items="items"
+    :items="users"
+    item-text="user"
     label="Filter by user"
     multiple
     chips
+    @change="cbFilters"
   >
     <template v-slot:selection="data">
       <v-chip
@@ -17,21 +19,32 @@
         <v-avatar
           class="accent white--text"
           left
-          v-text="data.item.slice(0, 1).toUpperCase()"
+          v-text="data.item.user.slice(0, 1).toUpperCase()"
         ></v-avatar>
-        {{ data.item }}
+        {{ data.item.user }}
       </v-chip>
     </template>
   </v-combobox>
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 export default {
   name: "UserFiltering",
   data: () => ({
     select: [],
-    items: ["luis", "daniel", "simoes"],
+    items: ["luis", "daniel"],
   }),
+  computed: {
+    ...mapGetters({
+      users: "users/getAllUsers",
+    }),
+  },
+  methods: {
+    cbFilters(e) {
+      this.$store.dispatch("rotas/filteredUsers", e);
+    },
+  },
 };
 </script>
 

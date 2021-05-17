@@ -6,7 +6,8 @@
         fab
         dark
         color="indigo"
-        absolute
+        bottom
+        fixed
         right
         :v-bind="binding"
         :v-on="action"

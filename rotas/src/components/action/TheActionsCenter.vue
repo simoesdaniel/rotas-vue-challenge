@@ -5,8 +5,10 @@
     class="rounded-lg mt-4 actions-control gray"
   >
     <v-col> <base-display-options @changeView="changeDisplayView" /> </v-col>
-    <v-col cols="6"> <user-filtering /> </v-col>
-    <v-col> <v-btn color="primary" dark>All Shifts</v-btn></v-col>
+    <v-col cols="9"> <user-filtering /> </v-col>
+    <!-- <v-col>
+      <v-btn color="primary" dark @click="displayAll">All Shifts</v-btn></v-col
+    > -->
   </v-row>
 </template>
 

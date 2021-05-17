@@ -13,9 +13,10 @@ import TheNavigation from "./components/nav/TheNavigation.vue";
 export default {
   components: { TheNavigation },
   name: "App",
-
-  data: () => ({
-    //
-  }),
+  created() {
+    this.$store.dispatch("setDefaultDisplayView");
+    this.$store.dispatch("users/loadUsers");
+    this.$store.dispatch("rotas/loadRotas");
+  },
 };
 </script>

@@ -9,7 +9,8 @@
               fab
               dark
               color="indigo"
-              absolute
+              fixed
+              bottom
               right
               v-bind="attrs"
               v-on="on"
